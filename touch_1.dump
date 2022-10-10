@@ -1,0 +1,262 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.5
+-- Dumped by pg_dump version 14.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: NOTE; Type: TABLE; Schema: public; Owner: lovely
+--
+
+CREATE TABLE public."NOTE" (
+    id bigint NOT NULL,
+    name character varying NOT NULL,
+    content character varying NOT NULL,
+    author_user bigint NOT NULL
+);
+
+
+ALTER TABLE public."NOTE" OWNER TO lovely;
+
+--
+-- Name: ROLE; Type: TABLE; Schema: public; Owner: lovely
+--
+
+CREATE TABLE public."ROLE" (
+    id bigint NOT NULL,
+    name character varying NOT NULL
+);
+
+
+ALTER TABLE public."ROLE" OWNER TO lovely;
+
+--
+-- Name: ROLE_id_seq; Type: SEQUENCE; Schema: public; Owner: lovely
+--
+
+ALTER TABLE public."ROLE" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."ROLE_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: SESSIONS; Type: TABLE; Schema: public; Owner: lovely
+--
+
+CREATE TABLE public."SESSIONS" (
+    id bigint NOT NULL,
+    user_id bigint NOT NULL,
+    create_time timestamp without time zone NOT NULL,
+    token uuid NOT NULL
+);
+
+
+ALTER TABLE public."SESSIONS" OWNER TO lovely;
+
+--
+-- Name: USER; Type: TABLE; Schema: public; Owner: lovely
+--
+
+CREATE TABLE public."USER" (
+    id bigint NOT NULL,
+    pass character varying NOT NULL,
+    login character varying NOT NULL,
+    role bigint DEFAULT 2 NOT NULL
+);
+
+
+ALTER TABLE public."USER" OWNER TO lovely;
+
+--
+-- Name: USER_id_seq; Type: SEQUENCE; Schema: public; Owner: lovely
+--
+
+ALTER TABLE public."USER" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public."USER_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: note_id_seq; Type: SEQUENCE; Schema: public; Owner: lovely
+--
+
+ALTER TABLE public."NOTE" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.note_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: lovely
+--
+
+ALTER TABLE public."SESSIONS" ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Data for Name: NOTE; Type: TABLE DATA; Schema: public; Owner: lovely
+--
+
+COPY public."NOTE" (id, name, content, author_user) FROM stdin;
+5	some name	some text	1
+6	user tname	user text	3
+7	blablabla	contentius	3
+\.
+
+
+--
+-- Data for Name: ROLE; Type: TABLE DATA; Schema: public; Owner: lovely
+--
+
+COPY public."ROLE" (id, name) FROM stdin;
+1	ADMIN
+2	USER
+\.
+
+
+--
+-- Data for Name: SESSIONS; Type: TABLE DATA; Schema: public; Owner: lovely
+--
+
+COPY public."SESSIONS" (id, user_id, create_time, token) FROM stdin;
+14	1	2022-10-09 22:06:52.743	0c63b29e-31d4-46c4-9116-bdc4035af2dd
+15	1	2022-10-09 22:07:04.965	ae82b0c8-00f9-4b73-bf3a-d24833b2706f
+16	1	2022-10-10 00:16:22.41	eea6fe92-dc4e-4f3a-94d1-a4919f0f0a06
+\.
+
+
+--
+-- Data for Name: USER; Type: TABLE DATA; Schema: public; Owner: lovely
+--
+
+COPY public."USER" (id, pass, login, role) FROM stdin;
+3	8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918	user	2
+1	949aa4b59610390edfad214444146c639deb4ad74315caf0b101cb3d5498f40e	admin	1
+\.
+
+
+--
+-- Name: ROLE_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lovely
+--
+
+SELECT pg_catalog.setval('public."ROLE_id_seq"', 2, true);
+
+
+--
+-- Name: USER_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lovely
+--
+
+SELECT pg_catalog.setval('public."USER_id_seq"', 3, true);
+
+
+--
+-- Name: note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lovely
+--
+
+SELECT pg_catalog.setval('public.note_id_seq', 7, true);
+
+
+--
+-- Name: sessions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: lovely
+--
+
+SELECT pg_catalog.setval('public.sessions_id_seq', 16, true);
+
+
+--
+-- Name: NOTE note_pk; Type: CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."NOTE"
+    ADD CONSTRAINT note_pk PRIMARY KEY (id);
+
+
+--
+-- Name: ROLE role_pk; Type: CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."ROLE"
+    ADD CONSTRAINT role_pk PRIMARY KEY (id);
+
+
+--
+-- Name: SESSIONS sessions_pk; Type: CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."SESSIONS"
+    ADD CONSTRAINT sessions_pk PRIMARY KEY (id);
+
+
+--
+-- Name: USER user_pk; Type: CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."USER"
+    ADD CONSTRAINT user_pk PRIMARY KEY (id);
+
+
+--
+-- Name: USER user_un; Type: CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."USER"
+    ADD CONSTRAINT user_un UNIQUE (login);
+
+
+--
+-- Name: NOTE note_fk; Type: FK CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."NOTE"
+    ADD CONSTRAINT note_fk FOREIGN KEY (author_user) REFERENCES public."USER"(id);
+
+
+--
+-- Name: USER user_fk; Type: FK CONSTRAINT; Schema: public; Owner: lovely
+--
+
+ALTER TABLE ONLY public."USER"
+    ADD CONSTRAINT user_fk FOREIGN KEY (role) REFERENCES public."ROLE"(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
