@@ -66,14 +66,14 @@ export default class PG extends DataSource {
 		)
 	}
 
-	async getSessionCreateTime(token: string) {
+	async getSessionCreateTime(token: string, login: string) {
 		return {
 			createTime: (
 				await this.pgClient.query(
-					`select cast(create_time as varchar(255)) from "SESSIONS" where "token" = $1`,
-					[token]
+					`select cast(create_time as varchar(255)) from "SESSIONS" where "token" = $1 and user_id = (select id from "USER" where login = $2)`,
+					[token, login]
 				)
-			).rows[0].create_time as string | undefined,
+			).rows[0]?.create_time as string | undefined,
 		}
 	}
 }

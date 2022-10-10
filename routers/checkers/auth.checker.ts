@@ -14,19 +14,22 @@ authChecker.use('/', async (req, res, next) => {
 		res.send('NEED LOGIN FOR ACCESS')
 		return
 	}
-	// Проверка, что токен - это UUID
 	const auth = parseBaseAuth(req.headers.authorization)
+	// Проверка, что токен - это UUID
 	if (!isUUID(auth.token)) {
 		res.send('INVALID TOKEN')
 		return
 	}
 	// Получаем время сессии по токену
 	const toketCreateTime =
-		await dataController.dataSource.getSessionCreateTime(auth.token)
+		await dataController.dataSource.getSessionCreateTime(
+			auth.token,
+			auth.login
+		)
 
 	// Проверка, что токен существует в БД
 	if (!toketCreateTime.createTime) {
-		res.send("TOKEN DOESN'T EXIST")
+		res.send("TOKEN OR USER DOESN'T EXIST")
 		return
 	}
 	// Проверка, что у токена не истекло время жизни

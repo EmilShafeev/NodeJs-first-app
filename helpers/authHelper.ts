@@ -1,4 +1,6 @@
 import moment, { DurationInputArg2 } from 'moment'
+import dataController from '../controllers/data/dataController'
+import { UserRole } from '../models/user/user.enum'
 
 const DB_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss.SSS'
 
@@ -34,4 +36,13 @@ export function isUUID(uuid: string) {
 		'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$'
 	)
 	return result !== null
+}
+
+export async function checkUserRole(login: string, accessRole: UserRole) {
+	const role = await getUserRole(login)
+	return role && role === accessRole
+}
+
+export async function getUserRole(login: string) {
+	return (await dataController.dataSource.getUser(login))?.role
 }

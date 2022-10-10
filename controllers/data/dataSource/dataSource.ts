@@ -25,6 +25,7 @@ export default abstract class DataSource {
 	abstract getUserNotes(login: string): Promise<Note[] | null>
 	abstract getAllNotes(): Promise<Note[]>
 	abstract getSessionCreateTime(
-		token: string
+		token: string,
+		login: string
 	): Promise<{ createTime: string | undefined }>
 }
