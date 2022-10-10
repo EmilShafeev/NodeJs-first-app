@@ -1,0 +1,28 @@
+{
+	"name": "touch_1",
+	"version": "0.0.1",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"test": "jest"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"body-parser": "^1.20.1",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.1",
+		"moment": "^2.29.4",
+		"pg": "^8.8.0"
+	},
+	"devDependencies": {
+		"@jest/globals": "^29.1.2",
+		"@types/express": "^4.17.14",
+		"@types/jest": "^29.1.2",
+		"@types/pg": "^8.6.5",
+		"jest": "^29.1.2",
+		"nodemon": "^2.0.20",
+		"ts-jest": "^29.0.3",
+		"typescript": "^4.8.4"
+	}
+}
